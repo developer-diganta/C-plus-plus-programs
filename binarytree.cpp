@@ -1,4 +1,5 @@
 #include<iostream>
+#include<queue>
 using namespace std;
 
 class node{
@@ -84,6 +85,26 @@ void printAllLevels(node* root){
 		cout<<endl;
 	}
 }
+
+void bfs(node* root){
+	queue<node*> q;
+	q.push(root);
+
+	while(!q.empty()){
+		node* f=q.front();
+		cout<<f->data<<",";
+		q.pop();
+
+		if(f->left){
+			q.push(f->left);
+		}
+
+		if(f->right){
+			q.push(f->right);
+		}
+	}
+	return;
+}
 int main(){
 	node* root=NULL;
 	root=buildTree();
@@ -95,6 +116,8 @@ int main(){
 	cout<<endl<<height(root);
 	cout<<endl;
 	printAllLevels(root);
+	cout<<endl;
+	bfs(root);
 
 
 	return 0;
