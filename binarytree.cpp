@@ -37,9 +37,33 @@ void print(node* root){
 	print(root->left);
 	print(root->right);
 }
+
+void printIn(node* root){
+	if(root==NULL){
+		return;
+	}
+	printIn(root->left);
+	cout<<root->data<<" ";
+	printIn(root->right);
+}
+
+void printPost(node* root){
+	if(root==NULL){
+		return;
+	}
+	printPost(root->left);
+	printPost(root->right);
+	cout<<root->data<<" ";
+}
+
 int main(){
 	node* root=NULL;
 	root=buildTree();
 	print(root);
+	cout<<endl;
+	printIn(root);
+	cout<<endl;
+	printPost(root);
+
 	return 0;
 }
