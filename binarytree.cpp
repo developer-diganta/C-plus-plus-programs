@@ -143,6 +143,18 @@ int count(node *root){
 	}
 	return 1+count(root->left)+count(root->right);
 }
+
+int diameter(node*root){
+	if(root==NULL){
+		return 0;
+	}
+	int h1=height(root->left);
+	int h2=height(root->right);
+	int op1=h1+h2;
+	int op2=height(root->left);
+	int op3=height(root->right);
+	return max(op1,max(op2,op3));
+}
 int main(){
 	node* root=NULL;
 	root=buildTree();
@@ -158,6 +170,8 @@ int main(){
 	bfs(root);
 	cout<<endl;
 	cout<<count(root);
+	cout<<endl;
+	cout<<"DIA : "<<diameter(root);
 
 
 	return 0;
