@@ -86,7 +86,7 @@ void printAllLevels(node* root){
 	}
 }
 
-void bfs(node* root){
+void bfs(node* root){//bfs with comma
 	queue<node*> q;
 	q.push(root);
 
@@ -105,6 +105,44 @@ void bfs(node* root){
 	}
 	return;
 }
+
+void bfs2(node* root){//bfs with new line
+	queue<node*> q;
+	q.push(root);
+	q.push(NULL);
+
+	while(!q.empty()){
+		node* f=q.front();
+		if(f==NULL){
+			cout<<endl;
+			q.pop();
+			if(!q.empty()){
+				q.push(NULL);
+			}
+		}
+		else{
+			cout<<f->data<<",";
+			q.pop();
+
+			if(f->left){
+				q.push(f->left);
+			}
+			if(f->right){
+				q.push(f->right);
+			}
+
+		}
+	
+	}
+	return;
+}
+
+int count(node *root){
+	if(root==NULL){
+		return 0;
+	}
+	return 1+count(root->left)+count(root->right);
+}
 int main(){
 	node* root=NULL;
 	root=buildTree();
@@ -118,6 +156,8 @@ int main(){
 	printAllLevels(root);
 	cout<<endl;
 	bfs(root);
+	cout<<endl;
+	cout<<count(root);
 
 
 	return 0;
