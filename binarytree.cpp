@@ -151,27 +151,68 @@ int diameter(node*root){
 	int h1=height(root->left);
 	int h2=height(root->right);
 	int op1=h1+h2;
-	int op2=height(root->left);
-	int op3=height(root->right);
+	int op2=diameter(root->left);
+	int op3=diameter(root->right);
 	return max(op1,max(op2,op3));
 }
+//for diameter using optimised approach
+class Pair{
+public:
+	int height;
+	int diameter;
+};
+
+Pair fastDiameter(node*root){
+	Pair p;
+	if(root==NULL){
+		p.diameter=p.height=0;
+		return p;
+	}
+	Pair left=fastDiameter(root->left);
+	Pair right=fastDiameter(root->right);
+	p.height=max(left.height,right.height)+1;
+	p.diameter=max(left.height+right.height,max(left.diameter,right.diameter));
+	return p;
+
+}
+
+int replaceSum(node* root){
+	if(root==NULL){
+		return 0;
+	}
+
+	if(root->left==NULL && root->right==NULL)//leaf node..not required to change any value
+	{
+		return root->data;//only returning its data
+	}
+
+	//Recursive part
+	int temp=root->data;
+	int ls=replaceSum(root->left);//getting sum of left subtree
+	int rs=replaceSum(root->right);//getting sum of right subtree
+	root->data=ls+rs;//replacing data
+	return temp+root->data;//sending current root data + ls + rs
+}
+
 int main(){
 	node* root=NULL;
 	root=buildTree();
-	print(root);
-	cout<<endl;
-	printIn(root);
-	cout<<endl;
-	printPost(root);
-	cout<<endl<<height(root);
-	cout<<endl;
+	// print(root);
+	// cout<<endl;
+	// printIn(root);
+	// cout<<endl;
+	// printPost(root);
+	// cout<<endl<<height(root);
+	// cout<<endl;
+	// printAllLevels(root);
+	// cout<<endl;
+	// bfs(root);
+	// cout<<endl;
+	// cout<<count(root);
+	// cout<<endl;
+	// cout<<"DIA : "<<diameter(root);
+	replaceSum(root);
 	printAllLevels(root);
-	cout<<endl;
-	bfs(root);
-	cout<<endl;
-	cout<<count(root);
-	cout<<endl;
-	cout<<"DIA : "<<diameter(root);
 
 
 	return 0;
