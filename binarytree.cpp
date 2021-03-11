@@ -193,27 +193,71 @@ int replaceSum(node* root){
 	root->data=ls+rs;//replacing data
 	return temp+root->data;//sending current root data + ls + rs
 }
+//for checking height balanced tree
+class HBPair{
+public:
+	int height;
+	bool balance;
+};
 
+HBPair isbalanced(node* root){
+	HBPair p;
+	if(root==NULL){
+		p.height=0;
+		p.balance=true;
+		return p;
+	}
+
+	HBPair left=isbalanced(root->left);
+	HBPair right=isbalanced(root->right);
+
+	p.height=max(left.height,right.height)+1;
+	if(abs(left.height-right.height)<=1 && left.balance && right.balance){
+		p.balance=true;
+	}
+	else{
+		p.balance=false;
+	}
+	return p;
+}
+
+node* buildTreeFromArray(int *a,int s,int e){
+	if(s>e)
+		return NULL;
+	int mid=(s+e)/2;
+	node* root=new node(a[mid]);
+	root->left=buildTreeFromArray(a,s,mid-1);
+	root->right=buildTreeFromArray(a,mid+1,e);
+	return root;
+}
 int main(){
-	node* root=NULL;
-	root=buildTree();
-	// print(root);
-	// cout<<endl;
-	// printIn(root);
-	// cout<<endl;
-	// printPost(root);
-	// cout<<endl<<height(root);
-	// cout<<endl;
-	// printAllLevels(root);
-	// cout<<endl;
-	// bfs(root);
-	// cout<<endl;
-	// cout<<count(root);
-	// cout<<endl;
-	// cout<<"DIA : "<<diameter(root);
-	replaceSum(root);
-	printAllLevels(root);
-
-
+	// node* root=NULL;
+	// root=buildTree();
+	// // print(root);
+	// // cout<<endl;
+	// // printIn(root);
+	// // cout<<endl;
+	// // printPost(root);
+	// // cout<<endl<<height(root);
+	// // cout<<endl;
+	// // printAllLevels(root);
+	// // cout<<endl;
+	// // bfs(root);
+	// // cout<<endl;
+	// // cout<<count(root);
+	// // cout<<endl;
+	// // cout<<"DIA : "<<diameter(root);
+	// // replaceSum(root);
+	// // printAllLevels(root);
+	// if(isbalanced(root).balance){
+	// 	cout<<"Balanced"<<endl;
+	// }
+	// else{
+	// 	cout<<"Not Balanced"<<endl;
+	// }
+	int a[]={1,2,3,4,5,6,7};
+	int n=7;
+	node* tree=buildTreeFromArray(a,0,n-1);
+	bfs2(tree);
 	return 0;
 }
