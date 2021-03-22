@@ -230,6 +230,66 @@ node* buildTreeFromArray(int *a,int s,int e){
 	root->right=buildTreeFromArray(a,mid+1,e);
 	return root;
 }
+
+node* createTreeFromTraversal(int*in,int*pre,int s,int e){
+	if(s>e){
+		return NULL;
+	}
+
+	static int i=0;//the pointer that controls the value in preorder
+
+	int index=-1;
+	for(int j=s;j<=e;j++){
+		if(pre[i]==in[j]){
+			index=j;
+			break;
+		}
+	}
+	node* root=new node(pre[i]);
+	i++;
+	root->left=createTreeFromTraversal(in,pre,s,index-1);
+	root->right=createTreeFromTraversal(in,pre,index+1,e);
+	return root;
+
+
+}
+
+void printRightView(node* root,int &max,int level){
+	if(root==NULL){
+		return;
+	}
+
+	if(max<level){
+		//have discovered a new level
+		cout<<root->data<<endl;
+		max=level;
+	}
+
+	printRightView(root->right,max,level+1);
+	printRightView(root->left,max,level+1);
+	return;
+}
+//assumption both a and b present in tree
+node* lca(node*a,int a,int b){
+	if(root==NULL){
+		return NULL;
+	}
+
+	if(root->data==a or root->data==b){
+		return root;
+	}
+
+	node* leftans=lca(root->left,a,b);
+	node* rightans=lca(root->right,a,b);
+	if(leftans!=NULL and rightans!=NULL){
+		return root;
+	}
+
+	if(left!=NULL){
+		return leftans;
+	}
+	return rightans;
+}
 int main(){
 	// node* root=NULL;
 	// root=buildTree();
@@ -255,9 +315,15 @@ int main(){
 	// else{
 	// 	cout<<"Not Balanced"<<endl;
 	// }
-	int a[]={1,2,3,4,5,6,7};
-	int n=7;
-	node* tree=buildTreeFromArray(a,0,n-1);
-	bfs2(tree);
+	// int a[]={1,2,3,4,5,6,7};
+	// int n=7;
+	// node* tree=buildTreeFromArray(a,0,n-1);
+	int a[]={1,2,3,4,8,5,6,7};
+	int b[]={3,2,8,4,1,6,7,5};
+	
+	node* root=createTreeFromTraversal(b,a,0,7);
+	bfs2(root);
+	int max=-1;
+	printRightView(root,max,0);
 	return 0;
 }
